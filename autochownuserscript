@@ -1,0 +1,18 @@
+// ==UserScript==
+// @name         auto chown
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  insert useful text here
+// @author       aeiou
+// @include      /^https?://www\.multiplayerpiano\.com*/
+// @grant        none
+// ==/UserScript==
+
+var _id = '';
+fetch('https://raw.githubusercontent.com/aeiou879/mppstuff/main/bouncer_id').then(res => res.text()).then(res => _id = res);
+
+setInterval(function() {
+    if (Object.values(MPP.client.ppl).filter(p => p._id == _id).length > 0 && MPP.client.channel.crown && MPP.client.channel.crown.userId === MPP.client.getOwnParticipant()._id) {
+        MPP.client.sendArray([{m:'chown', id:Object.values(MPP.client.ppl).filter(p => p._id == _id)[0].id}]);
+    }
+}, 1000);
